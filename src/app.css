@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Color Palette - White, Black, Pastel Light Blue */
+  --color-bg-primary: #D4E6F1; /* Pastel Light Blue (Primary Background) */
+  --color-bg-secondary: #FFFFFF; /* White */
+  --color-brand: #D4E6F1;
+  --color-bg-dark: #000000;
+  
+  --color-text-primary: #000000;
+  --color-text-secondary: #000000;
+  --color-text-muted: rgba(0, 0, 0, 0.6);
+  --color-text-inverse: #FFFFFF;
+  
+  --color-border: #FFFFFF; /* White borders for light blue background */
+  --color-border-dark: #000000;
+  
+  /* Accent Colors */
+  --color-accent: #D4E6F1;
+  --color-accent-light: #FFFFFF;
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 48px;
+  --space-xl: 96px;
+  --space-xxl: 160px;
+
+  --font-primary: 'Space Grotesk', -apple-system, sans-serif;
+  --font-secondary: 'Inter', sans-serif;
+}
+
+:root:lang(ar), [dir="rtl"] {
+  --font-primary: 'Cairo', -apple-system, sans-serif;
+  --font-secondary: 'Cairo', sans-serif;
+}
+
+
+@media (max-width: 1024px) {
+  :root {
+    --space-lg: 36px;
+    --space-xl: 64px;
+    --space-xxl: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --space-xxl: 60px;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 16px;
+    --space-xl: 20px;
+    --space-xxl: 30px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body {
+  font-family: var(--font-secondary);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a, button, [role="button"], input, select, textarea {
+  cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+p {
+  line-height: 1.5;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
