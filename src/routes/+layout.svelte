@@ -6,6 +6,8 @@
   import Footer from '$lib/components/Footer.svelte';
   import Preloader from '$lib/components/Preloader.svelte';
 
+  import { langState } from '$lib/translations.svelte';
+
   let lenis: Lenis;
 
   onMount(() => {
@@ -36,7 +38,12 @@
     };
   });
   
-  let { children } = $props();
+  let { data, children } = $props<{ data: { lang: 'en' | 'ar' }, children: any }>();
+  
+  // Initialize reactive language state with the server-detected value
+  $effect.pre(() => {
+    langState.current = data.lang;
+  });
 </script>
 
 <Preloader />

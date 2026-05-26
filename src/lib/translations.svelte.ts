@@ -5,7 +5,12 @@ class LanguageState {
 
   constructor() {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('rak-lang');
+      // Try to read cookie first
+      const cookieMatch = document.cookie.match(/(?:^|; )rak-lang=([^;]*)/);
+      const savedCookie = cookieMatch ? cookieMatch[1] : null;
+      const savedLocal = localStorage.getItem('rak-lang');
+      const saved = savedCookie || savedLocal;
+
       if (saved === 'en' || saved === 'ar') {
         this.current = saved;
       } else {
@@ -22,6 +27,7 @@ class LanguageState {
     this.current = lang;
     if (typeof window !== 'undefined') {
       localStorage.setItem('rak-lang', lang);
+      document.cookie = `rak-lang=${lang};path=/;max-age=31536000;SameSite=Lax`;
       this.updateDocument();
     }
   }

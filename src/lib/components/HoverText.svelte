@@ -4,7 +4,7 @@
   let isArabic = $derived(/[\u0600-\u06FF]/.test(text));
   let effectiveSplit = $derived(isArabic ? 'word' : splitBy);
 
-  let processedItems = $derived(() => {
+  let processedItems = $derived.by(() => {
     let index = 0;
     if (effectiveSplit === 'word') {
       return text.split(' ').map((word: string) => {
@@ -21,9 +21,9 @@
     }
   });
 </script>
-
+ 
 <span class="hover-text-container dir-{direction}">
-  {#each processedItems() as itemGroup, groupIndex}
+  {#each processedItems as itemGroup, groupIndex}
     <span class="group">
       {#each itemGroup as { text: content, index }}
         <span class="anim-wrapper" style="--index: {index}">
@@ -32,7 +32,7 @@
         </span>
       {/each}
     </span>
-    {#if groupIndex < processedItems().length - 1}
+    {#if groupIndex < processedItems.length - 1}
       <span class="space">&nbsp;</span>
     {/if}
   {/each}

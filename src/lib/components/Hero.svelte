@@ -37,7 +37,7 @@
 <section class="hero" data-cursor-text="DRAG">
   <div class="hero-bg" bind:this={bgRef}>
     <!-- Extremely high quality architecture unsplash image -->
-    <img src="https://images.unsplash.com/photo-1541888046425-d81bb19240f5?q=80&w=3000&auto=format&fit=crop" alt="Premium Concrete Architecture" />
+    <img src="https://images.unsplash.com/photo-1541888046425-d81bb19240f5?q=80&w=3000&auto=format&fit=crop" alt="Premium Concrete Architecture" width="1920" height="1080" />
     <div class="overlay"></div>
   </div>
 

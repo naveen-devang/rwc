@@ -58,7 +58,7 @@
       <div class="grid">
         {#each filteredImages as img (img.id)}
           <div class="image-wrapper">
-            <img src={img.src} alt="Product application" loading="lazy" />
+            <img src={img.src} alt="Product application" loading="lazy" width="800" height="600" />
             <div class="overlay">
               <span class="overlay-text">{t('prod.view_details')}</span>
             </div>

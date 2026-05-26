@@ -32,22 +32,22 @@
     <div class="logos-wrapper">
       <div class="logo-card" data-cursor-text={langState.current === 'ar' ? 'زيارة' : 'VISIT'}>
         <div class="card-bg">
-          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop" alt="Lime production" class="bg-img" />
+          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1200&auto=format&fit=crop" alt="Lime production" class="bg-img" width="1200" height="900" />
           <div class="card-overlay"></div>
         </div>
         <div class="card-content">
-          <img src={nooraLogo} alt="Ras Al Khaimah Lime Co. NOORA Logo" class="official-logo" />
+          <enhanced:img src={nooraLogo} alt="Ras Al Khaimah Lime Co. NOORA Logo" class="official-logo" />
           <span class="card-title">{t('sister.noora')}</span>
         </div>
       </div>
       
       <div class="logo-card" data-cursor-text={langState.current === 'ar' ? 'زيارة' : 'VISIT'}>
         <div class="card-bg">
-          <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&auto=format&fit=crop" alt="Block production" class="bg-img" />
+          <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?q=80&w=1200&auto=format&fit=crop" alt="Block production" class="bg-img" width="1200" height="900" />
           <div class="card-overlay"></div>
         </div>
         <div class="card-content">
-          <img src={mbfLogo} alt="Modern Block Factory MBF Logo" class="official-logo" />
+          <enhanced:img src={mbfLogo} alt="Modern Block Factory MBF Logo" class="official-logo" />
           <span class="card-title">{t('sister.mbf')}</span>
         </div>
       </div>
@@ -177,7 +177,7 @@
     width: auto;
     object-fit: contain;
     margin-bottom: auto;
-    filter: brightness(0) invert(1);
+    /* filter: brightness(0) invert(1); */
   }
 
   .card-title {

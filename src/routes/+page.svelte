@@ -25,7 +25,7 @@
     }
   ]);
 
-  let hoveredIndex = $state<number | null>(null);
+  let activeIndex = $state<number | null>(null);
 </script>
 
 <svelte:head>
@@ -44,18 +44,17 @@
     <div class="interactive-list">
       {#each features as feature, i}
         <!-- svelte-ignore a11y_no_static_element_interactions -->
-        <!-- svelte-ignore a11y_mouse_events_have_key_events -->
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
         <div 
           class="list-item" 
-          class:is-dimmed={hoveredIndex !== null && hoveredIndex !== i}
-          onmouseenter={() => hoveredIndex = i}
-          onmouseleave={() => hoveredIndex = null}
+          class:is-dimmed={activeIndex !== null && activeIndex !== i}
+          onclick={() => activeIndex = activeIndex === i ? null : i}
         >
           <div class="item-content">
             <span class="num">{feature.num}</span>
             <h3 class="title">{feature.title}</h3>
           </div>
-          {#if hoveredIndex === i}
+          {#if activeIndex === i}
             <div class="item-desc-wrapper" transition:slide={{ duration: 350 }}>
               <div class="item-desc">
                 <p>{feature.desc}</p>
