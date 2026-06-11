@@ -1,21 +1,16 @@
 :root {
-  /* Color Palette - White, Black, Pastel Light Blue */
-  --color-bg-primary: #D4E6F1; /* Pastel Light Blue (Primary Background) */
-  --color-bg-secondary: #FFFFFF; /* White */
-  --color-brand: #D4E6F1;
-  --color-bg-dark: #000000;
+  /* Color Palette - Minimalist, Premium Stark Monochromatic contrast */
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F4F4F4;
+  --color-bg-dark: #0A0A0A;
   
   --color-text-primary: #000000;
   --color-text-secondary: #000000;
-  --color-text-muted: rgba(0, 0, 0, 0.6);
+  --color-text-muted: #666666;
   --color-text-inverse: #FFFFFF;
   
-  --color-border: #FFFFFF; /* White borders for light blue background */
-  --color-border-dark: #000000;
-  
-  /* Accent Colors */
-  --color-accent: #D4E6F1;
-  --color-accent-light: #FFFFFF;
+  --color-border: #E5E5E5;
+  --color-border-dark: #333333;
 
   --space-xs: 8px;
   --space-sm: 16px;
@@ -24,15 +19,14 @@
   --space-xl: 96px;
   --space-xxl: 160px;
 
-  --font-primary: 'Space Grotesk', -apple-system, sans-serif;
-  --font-secondary: 'Inter', sans-serif;
+  --font-primary: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 :root:lang(ar), [dir="rtl"] {
   --font-primary: 'Cairo', -apple-system, sans-serif;
   --font-secondary: 'Cairo', sans-serif;
 }
-
 
 @media (max-width: 1024px) {
   :root {
@@ -92,10 +86,123 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
+h2 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+
+h2 .em, p .em, span .em {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+/* Structural Container helper */
+.container_container__v5gtR {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 clamp(var(--space-md), 5vw, var(--space-xl));
+}
+
+/* Button UI Components */
+.button_button-round__TFjlU {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 16px 32px;
+  font-family: var(--font-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.button_color-primary__JJ7Hh {
+  background-color: var(--color-text-primary);
+  color: var(--color-text-inverse);
+  border-color: var(--color-text-primary);
+}
+
+.button_color-primary__JJ7Hh:hover {
+  background-color: transparent;
+  color: var(--color-text-primary);
+}
+
+.button_color-secondary__FZDOG {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+}
+
+.button_color-secondary__FZDOG:hover {
+  background-color: var(--color-text-primary);
+  color: var(--color-text-inverse);
+  border-color: var(--color-text-primary);
+}
+
+.button_inversed__slQcI {
+  color: var(--color-text-inverse);
+  border-color: var(--color-border-dark);
+}
+
+.button_inversed__slQcI:hover {
+  background-color: var(--color-text-inverse);
+  color: var(--color-text-primary);
+  border-color: var(--color-text-inverse);
+}
+
+.button_content__6Zh3n {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.button_icon-after__vljdM {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.button_button-round__TFjlU:hover .button_icon-after__vljdM {
+  transform: translateX(4px);
+}
+
+[dir="rtl"] .button_button-round__TFjlU:hover .button_icon-after__vljdM {
+  transform: translateX(-4px) scaleX(-1);
+}
+
+/* Asymmetric Columns Layout */
+.assymetric-cols_row__tAyrs {
+  display: flex;
+  gap: var(--space-xl);
+  width: 100%;
+}
+
+.assymetric-cols_col__yB8jY {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .assymetric-cols_row__tAyrs {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+}
+
 p {
   line-height: 1.5;
 }
 
+/* Lenis momentum scroll rules */
 html.lenis, html.lenis body {
   height: auto;
 }

@@ -1,43 +1,53 @@
 <script lang="ts">
-  import HoverText from './HoverText.svelte';
-  import { t } from '$lib/translations.svelte';
+  import { t, langState } from '$lib/translations.svelte';
+  import HoverText from '$lib/components/HoverText.svelte';
 
-  let testimonials = $derived([
+  const reviews = $derived([
     {
-      quote: t('test.quote1'),
-      author: t('test.author1')
+      quote: {
+        en: `"NOORA Lime Co. is a long-term supplier for us and we are really happy to be associated with them."`,
+        ar: `"تعد شركة نورة لصناعة الجير شريكاً ومورداً استراتيجياً لنا على المدى الطويل، ونحن سعداء جداً بهذا التعاون المثمر."`
+      },
+      author: langState.current === 'en' ? 'Sembcorp Gulf O&M Limited' : 'سيمبكورب الخليج لتشغيل وصيانة الفنادق المحدودة'
     },
     {
-      quote: t('test.quote2'),
-      author: t('test.author2')
+      quote: {
+        en: `"Having a White Cement Supplier like RAK White Cement is what makes us successful."`,
+        ar: `"إن وجود مورد للإسمنت الأبيض بمستوى جودة وموثوقية إسمنت رأس الخيمة الأبيض هو سر نجاحنا."`
+      },
+      author: langState.current === 'en' ? 'Light Stone Factory' : 'مصنع لايت ستون للرخام والجرانيت'
     },
     {
-      quote: t('test.quote3'),
-      author: t('test.author3')
+      quote: {
+        en: `"Our association with NOORA Lime Company is highly valued by us."`,
+        ar: `"إن شراكتنا الطويلة والقوية مع شركة نورة لصناعة الجير هي شراكة نعتز بها ونقدرها للغاية."`
+      },
+      author: langState.current === 'en' ? 'Cochin Minerals and Rutile Limited' : 'كوشين للمعادن والروتيل المحدودة'
     }
   ]);
 </script>
 
-<section class="testimonials">
-  <div class="inner">
-    <div class="section-header">
-      <h2 class="hover-roll">
-        <HoverText text={t('test.title')} direction="up" />
+<section id="testimonials" class="testimonials_root__PiYLZ">
+  <div class="container_container__v5gtR">
+    <!-- Section Title with Hover Text Roll -->
+    <div class="testimonials_title__V_61W">
+      <h2 class="hover-trigger">
+        <HoverText text={t('test.title')} />
       </h2>
     </div>
-    
-    <div class="grid">
-      {#each testimonials as item}
-        <div class="card">
-          <p class="quote hover-slide-right">
-            <HoverText text={`"${item.quote}"`} direction="right" splitBy="word" />
+
+    <!-- Main Divider -->
+    <div class="testimonials_divider__j4fVS"></div>
+
+    <!-- 3-Column Testimonials Layout -->
+    <div class="testimonials_grid__S3Kng">
+      {#each reviews as review}
+        <div class="testimonial_column">
+          <p class="testimonial_quote hover-trigger">
+            <HoverText text={review.quote[langState.current]} direction="right" />
           </p>
-          <div class="author-block">
-            <span class="line"></span>
-            <p class="author hover-slide-right">
-              <HoverText text={item.author} direction="right" />
-            </p>
-          </div>
+          <div class="testimonial_meta_line"></div>
+          <span class="testimonial_author">{review.author}</span>
         </div>
       {/each}
     </div>
@@ -45,111 +55,80 @@
 </section>
 
 <style>
-  .testimonials {
-    padding: var(--space-lg) var(--space-xl) var(--space-xl);
-    background-color: var(--color-bg-dark);
-    color: var(--color-text-inverse);
+  .testimonials_root__PiYLZ {
+    padding: var(--space-xxl) 0;
+    background-color: #0A0A0A; /* Premium stark dark background as in reference */
+    color: #FFFFFF;
+    overflow: hidden;
   }
 
-  .inner {
-    max-width: 1600px;
-    margin: 0 auto;
+  .testimonials_title__V_61W {
+    margin-bottom: var(--space-md);
   }
 
-  .section-header {
-    margin-bottom: var(--space-xl);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding-bottom: var(--space-md);
-  }
-
-  .section-header h2 {
-    font-size: 5rem;
-    line-height: 1;
-    margin: 0;
+  .testimonials_title__V_61W h2 {
+    font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+    text-transform: uppercase;
+    font-weight: 500;
+    color: #FFFFFF;
+    display: inline-block;
     cursor: default;
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-xl);
+  .testimonials_divider__j4fVS {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-bottom: var(--space-xl);
   }
 
-  .card {
+  .testimonials_grid__S3Kng {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    width: 100%;
+  }
+
+  .testimonial_column {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    cursor: default;
+    gap: 24px;
+    height: 100%;
   }
 
-  .quote {
-    font-size: 2rem;
-    font-family: var(--font-primary);
-    line-height: 1.3;
-    margin-bottom: var(--space-xl);
+  .testimonial_quote {
+    font-family: var(--font-secondary);
+    font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+    line-height: 1.55;
     font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
   }
 
-  .author-block {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-  }
-
-  .line {
+  .testimonial_meta_line {
     width: 40px;
     height: 1px;
-    background-color: rgba(255, 255, 255, 0.6);
-    transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    background-color: rgba(255, 255, 255, 0.2);
+    margin-top: auto;
   }
 
-  .card:hover .line {
-    background-color: var(--color-brand);
-  }
-
-  .author {
-    font-size: 0.875rem;
+  .testimonial_author {
+    font-family: var(--font-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.5);
   }
 
-  /* --- Text Animation Triggers --- */
-
-  .hover-roll:hover :global(.original),
-  .hover-roll:hover :global(.duplicate) {
-    transform: translateY(-100%);
-  }
-
-  .card:hover .hover-slide-right :global(.original),
-  .card:hover .hover-slide-right :global(.duplicate) {
-    transform: translateX(100%);
-  }
-
-  @media (max-width: 1024px) {
-    .grid {
+  @media (max-width: 900px) {
+    .testimonials_grid__S3Kng {
       grid-template-columns: 1fr;
-      gap: var(--space-xl);
-    }
-  }
-
-  @media (max-width: 768px) {
-    .testimonials {
-      padding: var(--space-lg) var(--space-md) var(--space-lg);
-    }
-
-    .section-header h2 {
-      font-size: clamp(1.3rem, 8vw, 2.5rem);
-    }
-
-    .grid {
       gap: var(--space-lg);
     }
-
-    .quote {
-      font-size: clamp(1.05rem, 5vw, 1.35rem);
-      margin-bottom: var(--space-md);
+    
+    .testimonial_column {
+      gap: 16px;
     }
   }
 </style>

@@ -1,13 +1,19 @@
 <script lang="ts">
-  import rakLogo from '$lib/assets/rak-logo.png';
-  import { t } from '$lib/translations.svelte';
+  import { t, langState } from '$lib/translations.svelte';
+  import rwcLogo from '$lib/assets/rwc-logo.png';
 </script>
 
 <footer>
   <div class="footer-inner">
     <div class="footer-main">
       <div class="footer-info">
-        <h2 class="footer-title">{t('footer.title')}</h2>
+        <h2 class="footer-title">
+          {#if langState.current === 'en'}
+            Building For<br/> <span class="em">Tomorrow.</span>
+          {:else}
+            نبني<br/> <span class="em">للغد.</span>
+          {/if}
+        </h2>
         <p class="footer-description">
           {t('footer.desc')}
         </p>
@@ -16,20 +22,22 @@
       <div class="footer-links">
         <div class="link-column">
           <h3>{t('footer.col.company')}</h3>
-          <a href="#about">{t('footer.col.company.about')}</a>
-          <a href="#leadership">{t('footer.col.company.leadership')}</a>
-          <a href="#sustainability">{t('footer.col.company.sustainability')}</a>
+          <a href="#why-choose-us">{t('footer.col.company.about')}</a>
+          <a href="#sister-companies">{t('footer.col.company.leadership')}</a>
+          <a href="#global-reach">{t('footer.col.company.sustainability')}</a>
         </div>
+        
         <div class="link-column">
           <h3>{t('footer.col.products')}</h3>
-          <a href="#white-cement">{t('footer.col.products.wc')}</a>
-          <a href="#lime">{t('footer.col.products.lime')}</a>
-          <a href="#blocks">{t('footer.col.products.blocks')}</a>
+          <a href="#products">{t('footer.col.products.wc')}</a>
+          <a href="#products">{t('footer.col.products.lime')}</a>
+          <a href="#products">{t('footer.col.products.blocks')}</a>
         </div>
+        
         <div class="link-column">
           <h3>{t('footer.col.contact')}</h3>
           <a href="mailto:info@rakwhitecement.ae">info@rakwhitecement.ae</a>
-          <a href="tel:+97172034343">+971 7 203 4343</a>
+          <a href="tel:+97172034343">{t('nav.phone')}</a>
           <p>{t('footer.col.contact.address')}</p>
         </div>
       </div>
@@ -37,8 +45,7 @@
     
     <div class="footer-bottom">
       <div class="logo">
-        <img src={rakLogo} alt="RAK White Cement Logo" />
-        <span class="logo-text">RAK White Cement</span>
+        <enhanced:img src={rwcLogo} alt="RAK White Cement Logo" style="height: 40px; width: auto; object-fit: contain;" />
       </div>
       <p>&copy; {new Date().getFullYear()} {t('footer.copyright')}</p>
     </div>
@@ -67,14 +74,22 @@
   }
 
   .footer-title {
-    font-size: 5rem;
-    line-height: 1;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    line-height: 1.0;
+    text-transform: uppercase;
     margin-bottom: var(--space-md);
   }
 
+  .footer-title .em {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+  }
+
   .footer-description {
-    font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.8);
+    font-family: var(--font-secondary);
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
     max-width: 80%;
   }
 
@@ -91,17 +106,20 @@
   }
 
   .link-column h3 {
-    font-size: 1rem;
+    font-family: var(--font-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin-bottom: var(--space-xs);
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.5);
   }
 
   .link-column a, .link-column p {
+    font-family: var(--font-secondary);
     color: var(--color-text-inverse);
     text-decoration: none;
-    font-size: 1.125rem;
+    font-size: 1rem;
     transition: color 0.3s ease;
   }
 
@@ -113,7 +131,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
     padding-top: var(--space-lg);
   }
 
@@ -121,24 +139,15 @@
     display: flex;
     align-items: center;
     gap: var(--space-sm);
-    filter: brightness(0) invert(1);
   }
 
-  .logo img {
-    height: 32px;
+  .logo :global(img) {
+    height: 36px;
     width: auto;
   }
 
-  .logo-text {
-    font-family: var(--font-primary);
-    font-weight: 600;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
   .footer-bottom p {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.5);
     font-size: 0.875rem;
   }
 
@@ -147,21 +156,12 @@
       padding: var(--space-lg) var(--space-md) var(--space-lg);
     }
 
-    .footer-inner {
-      gap: var(--space-xl);
-    }
-
     .footer-main {
       grid-template-columns: 1fr;
       gap: var(--space-xl);
     }
 
-    .footer-title {
-      font-size: clamp(1.5rem, 8vw, 4rem);
-    }
-
     .footer-description {
-      font-size: 1.15rem;
       max-width: 100%;
     }
 

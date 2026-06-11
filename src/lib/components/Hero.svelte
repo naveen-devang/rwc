@@ -1,289 +1,437 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { animate, stagger } from 'motion';
-  import { ArrowRight } from 'lucide-svelte';
-  import MagneticButton from '$lib/components/MagneticButton.svelte';
-  import { t, langState } from '$lib/translations.svelte';
+    import { onMount } from "svelte";
+    import { t, langState } from "$lib/translations.svelte";
+    import backImg from "$lib/assets/unnamed (2).jpg";
+    import cloudImg from "$lib/assets/cloud.png";
+    import smokeImg from "$lib/assets/smoke.png";
 
-  let lines: HTMLElement[] = $state([]);
-  let bgRef: HTMLDivElement | undefined = $state();
+    let scrollY = $state(0);
+    let isMounted = $state(false);
 
-  onMount(() => {
-    // Wait for preloader (roughly 2.2s total delay: 1.5s load + 0.7s exit)
-    setTimeout(() => {
-      if (lines.length > 0) {
-        animate(
-          lines,
-          { y: ['100%', '0%'] } as any,
-          { duration: 1.2, delay: stagger(0.1), ease: [0.16, 1, 0.3, 1] } as any
-        );
-      }
-    }, 2200);
+    onMount(() => {
+        isMounted = true;
+        const handleScroll = () => {
+            scrollY = window.scrollY;
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    });
 
-    // Simple Parallax Effect
-    const handleScroll = () => {
-      if (bgRef) {
-        const scrolled = window.scrollY;
-        // Move the background down slightly as we scroll down to create parallax
-        bgRef.style.transform = `translateY(${scrolled * 0.4}px)`;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  });
+    // Calculate parallax translations reactively
+    let backY = $derived(scrollY * 0.15);
+    let cloud1X = $derived(scrollY * -0.15);
+    let cloud2X = $derived(scrollY * 0.15);
+    let smokeY = $derived(scrollY * 0.35);
+    let contentY = $derived(scrollY * 0.05);
+    let contentScale = $derived(Math.max(0.9, 1 - scrollY * 0.0002));
+    let contentOpacity = $derived(Math.max(0, 1 - scrollY * 0.0015));
 </script>
 
-<section class="hero" data-cursor-text="DRAG">
-  <div class="hero-bg" bind:this={bgRef}>
-    <!-- Extremely high quality architecture unsplash image -->
-    <img src="https://images.unsplash.com/photo-1541888046425-d81bb19240f5?q=80&w=3000&auto=format&fit=crop" alt="Premium Concrete Architecture" width="1920" height="1080" />
-    <div class="overlay"></div>
-  </div>
+<section class="hero_root__N0Loz" style="visibility: visible; opacity: 1;">
+    <div class="hero_top__WegWw">
+        <!-- Backdrop Parallax -->
+        <div class="hero_bg__S_r_n">
+            <div
+                class="hero_back__8ReFI"
+                style="transform: translateY({backY}px);"
+            >
+                <enhanced:img
+                    src={backImg}
+                    alt="Architectural backdrop"
+                    loading="eager"
+                />
+            </div>
 
-  <div class="hero-content">
-    <div class="announcement">
-      <span class="badge">{t('hero.badge')}</span>
-      <a href="#announcement" data-cursor-text="VIEW">
-        {t('hero.announcement')} 
-        <ArrowRight size={16} style={langState.current === 'ar' ? 'transform: scaleX(-1); margin-right: 4px;' : ''}/>
-      </a>
+            <!-- Parallax Scenic View without residential overlaps -->
+
+            <!-- Clouds Layer -->
+            <div class="hero_clouds__bC7V4">
+                <div
+                    class="hero_cloud__TvA3o"
+                    style="transform: translate3d({cloud1X}px, 0, 0);"
+                >
+                    <enhanced:img
+                        src={cloudImg}
+                        alt="Clouds background left"
+                        loading="lazy"
+                    />
+                </div>
+                <div
+                    class="hero_cloud__TvA3o"
+                    style="transform: translate3d({cloud2X}px, 0, 0);"
+                >
+                    <enhanced:img
+                        src={cloudImg}
+                        alt="Clouds background right"
+                        loading="lazy"
+                    />
+                </div>
+            </div>
+
+            <!-- Logo SVG spelling RAK CO. WHITE CEMENT -->
+            <div class="hero_logo__FxgRj">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 350">
+                    <text
+                        x="50%"
+                        y="38%"
+                        dominant-baseline="middle"
+                        text-anchor="middle"
+                        font-weight="900"
+                        font-size="110"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        letter-spacing="4"
+                        font-family="var(--font-primary)">RAK CO.</text
+                    >
+                    <text
+                        x="50%"
+                        y="82%"
+                        dominant-baseline="middle"
+                        text-anchor="middle"
+                        font-weight="900"
+                        font-size="90"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        letter-spacing="4"
+                        font-family="var(--font-primary)">WHITE CEMENT</text
+                    >
+                </svg>
+            </div>
+
+            <!-- Overlay smoke elements -->
+            <div
+                class="hero_smoke__8za_R"
+                style="transform: translate3d(0, {smokeY}px, 0);"
+            >
+                <enhanced:img src={smokeImg} alt="Smoke layer" loading="lazy" />
+            </div>
+        </div>
     </div>
 
-    <!-- Huge Typography -->
-    <h1 class="hero-title">
-      <div class="line-wrap"><span class="line" bind:this={lines[0]}>{t('hero.title.line1')}</span></div>
-      <div class="line-wrap"><span class="line" bind:this={lines[1]}>{t('hero.title.line2')}</span></div>
-      <div class="line-wrap"><span class="line" bind:this={lines[2]}>{t('hero.title.line3')}</span></div>
-      <div class="line-wrap"><span class="line" bind:this={lines[3]}>{t('hero.title.line4')}</span></div>
-    </h1>
-    
-    <div class="hero-bottom">
-      <p class="hero-lead">{t('hero.lead')}</p>
-      <div data-cursor-text="">
-        <MagneticButton text={t('hero.discover')} dark={true} />
-      </div>
+    <!-- Hero Content Grid -->
+    <div
+        class="hero_content__DK_Ny"
+        style="transform: translate3d(0, {contentY}px, 0) scale({contentScale}); opacity: {contentOpacity};"
+    >
+        <div class="container_container__v5gtR">
+            <!-- Announcement bar -->
+            {#if t("hero.announcement")}
+                <div class="hero_announcement-wrap">
+                    <span class="badge">{t("hero.badge")}</span>
+                    <a href="#blog" class="announcement-link">
+                        {t("hero.announcement")}
+                        <span class="arrow-icon">→</span>
+                    </a>
+                </div>
+            {/if}
+
+            <div class="hero_title__JpmHS">
+                <h1>
+                    <!-- Staggered line reveals -->
+                    <div class="word-reveal">
+                        <span class="word">{t("hero.title.line1")}&nbsp;</span>
+                        <span class="word">{t("hero.title.line2")}&nbsp;</span>
+                        <span class="word">{t("hero.title.line3")}&nbsp;</span>
+                        <span class="word">{t("hero.title.line4")}&nbsp;</span>
+                    </div>
+                </h1>
+            </div>
+
+            <div class="hero_text__R6LQ5">
+                <p>{t("hero.lead")}</p>
+            </div>
+
+            <div class="hero_actions__RlphJ">
+                <a
+                    class="button_button-round__TFjlU button_color-primary__JJ7Hh"
+                    href="#products"
+                >
+                    <div class="button_content__6Zh3n">
+                        <div class="button_button-round-text__IEwW5">
+                            <span data-text={t("hero.discover")}
+                                >{t("hero.discover")}</span
+                            >
+                        </div>
+                        <span class="button_icon-after__vljdM">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                width="20"
+                                height="20"
+                            >
+                                <path
+                                    fill="currentColor"
+                                    d="m20.78 12.531-6.75 6.75a.75.75 0 1 1-1.06-1.061l5.47-5.47H3.75a.75.75 0 1 1 0-1.5h14.69l-5.47-5.469a.75.75 0 1 1 1.06-1.061l6.75 6.75a.75.75 0 0 1 0 1.061"
+                                ></path>
+                            </svg>
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
-  </div>
+
+    <!-- Foreground Transition Overlap -->
+    <div class="hero_overlap__d3EJV">
+        <div class="hero_smoke__8za_R">
+            <enhanced:img
+                src={smokeImg}
+                alt="Foreground smoke"
+                loading="lazy"
+            />
+        </div>
+        <div class="hero_overlay__7ubgG"></div>
+    </div>
 </section>
 
 <style>
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 120px var(--space-xl) var(--space-xl);
-    color: var(--color-text-inverse);
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute;
-    top: -10%; /* Extra height to allow parallax movement without showing edge */
-    left: 0;
-    width: 100%;
-    height: 120%; 
-    z-index: -1;
-    will-change: transform;
-  }
-
-  .hero-bg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 100%);
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 10;
-    max-width: 1600px;
-    width: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-  }
-
-  .announcement {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-md);
-  }
-
-  .badge {
-    background-color: var(--color-text-inverse);
-    color: var(--color-text-primary);
-    padding: 6px 16px;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .announcement a {
-    color: var(--color-text-inverse);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-    white-space: normal;
-  }
-  
-  .announcement a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: currentColor;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .announcement a:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-
-  .hero-title {
-    font-size: clamp(3rem, 7.5vw, 120px);
-    text-transform: uppercase;
-    margin-bottom: auto;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
-    font-weight: 600;
-  }
-
-  @media (min-width: 1600px) {
-    .hero-title {
-      font-size: 130px;
-    }
-  }
-
-  .line-wrap {
-    overflow: hidden;
-  }
-
-  .line {
-    display: block;
-    transform: translateY(100%); /* hidden initially */
-    will-change: transform;
-    white-space: nowrap;
-  }
-
-  .hero-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-
-  .hero-lead {
-    font-size: 1.5rem;
-    max-width: 500px;
-    opacity: 0.9;
-    font-weight: 400;
-  }
-
-  @media (max-width: 1024px) {
-    .hero {
-      min-height: 100dvh;
-      padding: 130px var(--space-md) clamp(var(--space-md), 6vh, var(--space-xl));
+    .hero_root__N0Loz {
+        position: relative;
+        min-height: 100vh;
+        width: 100%;
+        background-color: var(--color-bg-primary);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding-bottom: 80px;
     }
 
-    .hero-title {
-      font-size: clamp(1.3rem, 10.5vw, 4.5rem);
-      line-height: 1.02;
-      letter-spacing: -0.03em;
-      /* Inherits margin-bottom: auto which pushes content to the bottom */
+    .hero_top__WegWw {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
     }
 
-    .hero-bottom {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: clamp(var(--space-md), 3.5vh, var(--space-lg));
-      width: 100%;
-      margin-top: var(--space-lg);
+    .hero_bg__S_r_n {
+        position: relative;
+        width: 100%;
+        height: 100%;
     }
 
-    .hero-lead {
-      font-size: clamp(1.15rem, 4.8vw, 1.55rem);
-      max-width: 100%;
-      line-height: 1.4;
-    }
-  }
-
-  @media (max-height: 550px) {
-    .hero {
-      min-height: auto;
-      padding: 80px var(--space-md) var(--space-md);
+    .hero_back__8ReFI {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 110%;
+        top: -5%;
+        will-change: transform;
     }
 
-    .hero-title {
-      font-size: clamp(1.8rem, 5.5vw, 2.5rem);
-      margin-bottom: var(--space-md);
+    .hero_back__8ReFI :global(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
-    .hero-bottom {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-end;
-      width: 100%;
+    .hero_clouds__bC7V4 {
+        position: absolute;
+        top: 20%;
+        width: 100%;
+        height: 300px;
+        z-index: 3;
+        pointer-events: none;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .hero_cloud__TvA3o {
+        width: 45%;
+        max-width: 600px;
+        height: auto;
+        will-change: transform;
+        opacity: 0.85;
+    }
+
+    .hero_cloud__TvA3o :global(img) {
+        width: 100%;
+        height: auto;
+    }
+
+    .hero_logo__FxgRj {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70%;
+        max-width: 900px;
+        color: var(--color-text-primary);
+        opacity: 0.05;
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    .hero_logo__FxgRj svg {
+        width: 100%;
+        height: auto;
+    }
+
+    .hero_smoke__8za_R {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 40%;
+        z-index: 6;
+        pointer-events: none;
+        will-change: transform;
+        opacity: 0.8;
+    }
+
+    .hero_smoke__8za_R :global(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Content Overlay */
+    .hero_content__DK_Ny {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        color: var(--color-text-primary);
+        margin-top: auto;
+        will-change: transform, opacity;
+    }
+
+    .hero_title__JpmHS {
+        margin-bottom: 16px;
+    }
+
+    .hero_title__JpmHS h1 {
+        font-size: clamp(3rem, 8vw, 6.5rem);
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        text-transform: uppercase;
+    }
+
+    .word-reveal {
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .hero_text__R6LQ5 {
+        max-width: 600px;
+        margin-bottom: var(--space-md);
+    }
+
+    .hero_text__R6LQ5 p {
+        font-size: clamp(1.15rem, 3vw, 1.75rem);
+        line-height: 1.4;
+        font-weight: 400;
+    }
+
+    /* Transition elements at the very bottom */
+    .hero_overlap__d3EJV {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 120px;
+        z-index: 8;
+        pointer-events: none;
+    }
+
+    .hero_overlay__7ubgG {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to bottom,
+            transparent,
+            var(--color-bg-primary)
+        );
+    }
+
+    @media (max-width: 768px) {
+        .hero_root__N0Loz {
+            padding-bottom: 40px;
+        }
+
+        .hero_logo__FxgRj {
+            width: 90%;
+        }
+
+        .hero_clouds__bC7V4 {
+            top: 15%;
+            height: 150px;
+        }
+    }
+
+    .hero_announcement-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 8px 16px;
+        border-radius: 99px;
+        margin-bottom: var(--space-md);
+        max-width: 100%;
+    }
+
+    .hero_announcement-wrap .badge {
+        background-color: var(--color-text-primary);
+        color: var(--color-text-inverse);
+        padding: 4px 12px;
+        border-radius: 99px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        flex-shrink: 0;
+    }
+
+    .hero_announcement-wrap .announcement-link {
+        color: var(--color-text-primary);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .hero_announcement-wrap .arrow-icon {
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+
+    .hero_announcement-wrap:hover .arrow-icon {
+        transform: translateX(4px);
+    }
+
+    :global([dir="rtl"]) .hero_announcement-wrap .arrow-icon {
+        transform: scaleX(-1);
+    }
+
+    :global([dir="rtl"]) .hero_announcement-wrap:hover .arrow-icon {
+        transform: scaleX(-1) translateX(-4px);
     }
 
     @media (max-width: 640px) {
-      .hero-bottom {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-sm);
-      }
-      .hero-lead {
-        max-width: 100% !important;
-      }
-    }
+        .hero_announcement-wrap {
+            flex-direction: column;
+            align-items: flex-start;
+            border-radius: 12px;
+            gap: 6px;
+            padding: 10px var(--space-sm);
+            width: 100%;
+        }
 
-    .hero-lead {
-      font-size: 1rem;
-      max-width: 60%;
-      margin: 0;
+        .hero_announcement-wrap .announcement-link {
+            white-space: normal;
+            font-size: 0.8rem;
+        }
     }
-  }
-
-  @media (max-width: 480px) {
-    .announcement {
-      flex-direction: column;
-      align-items: flex-start !important;
-      gap: var(--space-xs) !important;
-      margin-bottom: var(--space-sm) !important;
-    }
-
-    .badge {
-      padding: 4px 12px !important;
-      font-size: 0.65rem !important;
-    }
-
-    .announcement a {
-      font-size: 0.75rem !important;
-    }
-  }
-
-  @media (max-width: 360px) {
-    .hero {
-      padding: 90px var(--space-sm) clamp(var(--space-xs), 4vh, var(--space-sm)) !important;
-      min-height: 100dvh;
-    }
-  }
 </style>
