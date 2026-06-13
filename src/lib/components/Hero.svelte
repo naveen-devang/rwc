@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { t, langState } from "$lib/translations.svelte";
-    import backImg from "$lib/assets/unnamed (2).jpg";
+    import backImg from "$lib/assets/unnamed.jpg";
     import cloudImg from "$lib/assets/cloud.png";
     import smokeImg from "$lib/assets/smoke.png";
 
@@ -196,8 +196,10 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: flex-start;
+        padding-top: 140px; /* Safety padding to clear the fixed navbar */
         padding-bottom: 80px;
+        box-sizing: border-box;
     }
 
     .hero_top__WegWw {
@@ -350,6 +352,7 @@
 
     @media (max-width: 768px) {
         .hero_root__N0Loz {
+            padding-top: 100px; /* Shorter safety padding for mobile/tablet headers */
             padding-bottom: 40px;
         }
 
@@ -366,15 +369,21 @@
     .hero_announcement-wrap {
         display: inline-flex;
         align-items: center;
-        gap: var(--space-sm);
+        flex-wrap: wrap;
+        gap: 8px 12px;
         background: rgba(255, 255, 255, 0.5);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(0, 0, 0, 0.1);
-        padding: 8px 16px;
+        padding: 6px 16px 6px 8px; /* Asymmetric padding to visually balance the badge */
         border-radius: 99px;
         margin-bottom: var(--space-md);
         max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    :global([dir="rtl"]) .hero_announcement-wrap {
+        padding: 6px 8px 6px 16px;
     }
 
     .hero_announcement-wrap .badge {
@@ -394,17 +403,17 @@
         text-decoration: none;
         font-weight: 500;
         font-size: 0.875rem;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         gap: 6px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: normal; /* Allow text to wrap on small widths */
+        line-height: 1.4;
     }
 
     .hero_announcement-wrap .arrow-icon {
         display: inline-block;
         transition: transform 0.3s ease;
+        flex-shrink: 0;
     }
 
     .hero_announcement-wrap:hover .arrow-icon {
@@ -419,19 +428,23 @@
         transform: scaleX(-1) translateX(-4px);
     }
 
+    @media (max-width: 992px) {
+        .hero_announcement-wrap {
+            border-radius: 16px;
+            padding: 10px 16px;
+            gap: 8px;
+        }
+
+        .hero_announcement-wrap .announcement-link {
+            font-size: 0.8rem;
+        }
+    }
+
     @media (max-width: 640px) {
         .hero_announcement-wrap {
             flex-direction: column;
             align-items: flex-start;
-            border-radius: 12px;
-            gap: 6px;
-            padding: 10px var(--space-sm);
             width: 100%;
-        }
-
-        .hero_announcement-wrap .announcement-link {
-            white-space: normal;
-            font-size: 0.8rem;
         }
     }
 </style>
